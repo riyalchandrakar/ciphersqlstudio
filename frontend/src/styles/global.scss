@@ -1,0 +1,317 @@
+@use 'utils/variables' as *;
+@use 'utils/mixins' as *;
+
+// ─── Google Fonts Import ──────────────────────────────────
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+// ─── CSS Custom Properties (for use in inline styles) ────────
+:root {
+  --font-code: #{$font-code};
+  --font-display: #{$font-display};
+  --color-border: #{$color-border};
+  --color-bg-elevated: #{$color-bg-elevated};
+  --color-bg-tertiary: #{$color-bg-tertiary};
+  --color-accent-cyan: #{$color-accent-cyan};
+  --color-text-muted: #{$color-text-muted};
+  --color-text-secondary: #{$color-text-secondary};
+}
+
+// ─── Reset & Base ─────────────────────────────────────────
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: $color-bg-primary;
+  color: $color-text-primary;
+  font-family: $font-body;
+  font-size: $font-size-base;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+  @include custom-scrollbar($color-border);
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+// ─── Typography ───────────────────────────────────────────
+h1, h2, h3, h4, h5, h6 {
+  font-family: $font-display;
+  font-weight: 700;
+  line-height: 1.2;
+  color: $color-text-primary;
+}
+
+p {
+  line-height: 1.7;
+}
+
+a {
+  color: $color-accent-cyan;
+  text-decoration: none;
+  transition: color $transition-fast;
+
+  &:hover {
+    color: lighten($color-accent-cyan, 10%);
+  }
+}
+
+code, pre {
+  font-family: $font-code;
+}
+
+// ─── Utility Classes ──────────────────────────────────────
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.container {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 $space-4;
+
+  @include tablet {
+    padding: 0 $space-6;
+  }
+
+  @include desktop {
+    padding: 0 $space-8;
+  }
+}
+
+// ─── Scrollbar for scrollable areas ───────────────────────
+.scrollable {
+  @include custom-scrollbar($color-border);
+  overflow-y: auto;
+}
+
+// ─── Difficulty Badge ─────────────────────────────────────
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: $space-1 $space-3;
+  border-radius: $radius-full;
+  font-size: $font-size-xs;
+  font-weight: 600;
+  font-family: $font-display;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+
+  &--easy {
+    color: $color-easy;
+    background: rgba($color-easy, 0.1);
+    border: 1px solid rgba($color-easy, 0.3);
+  }
+
+  &--medium {
+    color: $color-medium;
+    background: rgba($color-medium, 0.1);
+    border: 1px solid rgba($color-medium, 0.3);
+  }
+
+  &--hard {
+    color: $color-hard;
+    background: rgba($color-hard, 0.1);
+    border: 1px solid rgba($color-hard, 0.3);
+  }
+}
+
+// ─── Button System ────────────────────────────────────────
+.btn {
+  @include btn-base;
+  padding: $space-3 $space-5;
+  font-size: $font-size-sm;
+
+  &--primary {
+    background: $color-accent-cyan;
+    color: $color-bg-primary;
+
+    &:hover:not(:disabled) {
+      background: lighten($color-accent-cyan, 8%);
+      box-shadow: $shadow-glow-cyan;
+      transform: translateY(-1px);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+
+  &--secondary {
+    background: $color-bg-elevated;
+    color: $color-text-primary;
+    border: 1px solid $color-border;
+
+    &:hover:not(:disabled) {
+      border-color: $color-accent-cyan;
+      color: $color-accent-cyan;
+      background: $color-accent-cyan-dim;
+    }
+  }
+
+  &--danger {
+    background: $color-accent-red-dim;
+    color: $color-accent-red;
+    border: 1px solid rgba($color-accent-red, 0.3);
+
+    &:hover:not(:disabled) {
+      background: rgba($color-accent-red, 0.2);
+    }
+  }
+
+  &--ghost {
+    background: transparent;
+    color: $color-text-secondary;
+    padding: $space-2 $space-3;
+
+    &:hover:not(:disabled) {
+      color: $color-text-primary;
+      background: $color-bg-elevated;
+    }
+  }
+
+  &--sm {
+    padding: $space-2 $space-3;
+    font-size: $font-size-xs;
+    border-radius: $radius-sm;
+  }
+
+  &--lg {
+    padding: $space-4 $space-8;
+    font-size: $font-size-base;
+  }
+
+  &--icon {
+    padding: $space-2;
+    border-radius: $radius-sm;
+    min-width: 32px;
+    height: 32px;
+  }
+}
+
+// ─── Form Elements ────────────────────────────────────────
+.input {
+  @include input-base;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+
+  &__label {
+    font-size: $font-size-sm;
+    font-weight: 500;
+    color: $color-text-secondary;
+  }
+
+  &__error {
+    font-size: $font-size-xs;
+    color: $color-accent-red;
+    @include flex-start;
+    gap: $space-1;
+  }
+}
+
+// ─── Loading Spinner ──────────────────────────────────────
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid $color-border;
+  border-top-color: $color-accent-cyan;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+
+  &--lg {
+    width: 40px;
+    height: 40px;
+    border-width: 3px;
+  }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+// ─── Toast notification ───────────────────────────────────
+.toast {
+  position: fixed;
+  bottom: $space-6;
+  right: $space-6;
+  z-index: $z-toast;
+  padding: $space-3 $space-5;
+  border-radius: $radius-md;
+  font-size: $font-size-sm;
+  font-weight: 500;
+  animation: slideIn 0.3s ease;
+  max-width: 360px;
+
+  &--success {
+    background: $color-bg-elevated;
+    border: 1px solid rgba($color-easy, 0.4);
+    color: $color-easy;
+    box-shadow: 0 0 12px rgba($color-easy, 0.15);
+  }
+
+  &--error {
+    background: $color-bg-elevated;
+    border: 1px solid rgba($color-accent-red, 0.4);
+    color: $color-accent-red;
+  }
+
+  &--info {
+    background: $color-bg-elevated;
+    border: 1px solid rgba($color-accent-cyan, 0.4);
+    color: $color-accent-cyan;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+// ─── Fade In Animation ────────────────────────────────────
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+  animation: fadeIn 0.35s ease forwards;
+}
+
+// ─── Pulse Glow ───────────────────────────────────────────
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 8px rgba($color-accent-cyan, 0.2); }
+  50% { box-shadow: 0 0 20px rgba($color-accent-cyan, 0.5); }
+}

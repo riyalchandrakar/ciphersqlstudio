@@ -1,0 +1,564 @@
+@use '../utils/variables' as *;
+@use '../utils/mixins' as *;
+
+.attempt-page {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 68px);
+  overflow: hidden;
+
+  // On mobile, allow scrolling
+  @media (max-width: #{$bp-desktop - 1px}) {
+    height: auto;
+    overflow: auto;
+  }
+
+  &__toolbar {
+    @include flex-between;
+    padding: $space-3 $space-6;
+    background: $color-bg-secondary;
+    border-bottom: 1px solid $color-border;
+    flex-shrink: 0;
+    gap: $space-3;
+    flex-wrap: wrap;
+  }
+
+  &__toolbar-left {
+    @include flex-start;
+    gap: $space-3;
+    min-width: 0;
+  }
+
+  &__back-btn {
+    @include btn-base;
+    padding: $space-2 $space-3;
+    font-size: $font-size-xs;
+    background: transparent;
+    color: $color-text-secondary;
+    gap: $space-1;
+
+    &:hover {
+      color: $color-text-primary;
+      background: $color-bg-elevated;
+    }
+  }
+
+  &__assignment-title {
+    font-family: $font-display;
+    font-size: $font-size-sm;
+    color: $color-text-primary;
+    @include truncate;
+
+    @include desktop {
+      font-size: $font-size-base;
+    }
+  }
+
+  &__toolbar-right {
+    @include flex-start;
+    gap: $space-3;
+    flex-shrink: 0;
+  }
+
+  &__body {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+    flex-direction: column;
+
+    @include desktop {
+      flex-direction: row;
+    }
+  }
+
+  // ─── Left Panel ────────────────────────────────────────
+  &__left-panel {
+    width: 100%;
+    border-bottom: 1px solid $color-border;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    @include desktop {
+      width: 380px;
+      min-width: 320px;
+      max-width: 460px;
+      border-bottom: none;
+      border-right: 1px solid $color-border;
+      resize: horizontal;
+    }
+
+    @include wide {
+      width: 420px;
+    }
+  }
+
+  &__panel-tabs {
+    @include flex-start;
+    background: $color-bg-secondary;
+    border-bottom: 1px solid $color-border;
+    flex-shrink: 0;
+    padding: 0 $space-4;
+    gap: 0;
+    overflow-x: auto;
+    @include custom-scrollbar($color-border);
+  }
+
+  &__panel-tab {
+    @include btn-base;
+    padding: $space-3 $space-4;
+    font-size: $font-size-xs;
+    font-family: $font-display;
+    background: transparent;
+    color: $color-text-muted;
+    border-radius: 0;
+    border-bottom: 2px solid transparent;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+
+    &:hover {
+      color: $color-text-secondary;
+    }
+
+    &--active {
+      color: $color-accent-cyan;
+      border-bottom-color: $color-accent-cyan;
+    }
+  }
+
+  &__panel-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: $space-5;
+    @include custom-scrollbar($color-border);
+
+    @media (max-width: #{$bp-desktop - 1px}) {
+      max-height: 40vh;
+    }
+  }
+
+  // ─── Right Panel ───────────────────────────────────────
+  &__right-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-height: 0;
+  }
+
+  &__editor-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    position: relative;
+  }
+
+  &__editor-header {
+    @include flex-between;
+    padding: $space-3 $space-4;
+    background: $color-bg-secondary;
+    border-bottom: 1px solid $color-border;
+    flex-shrink: 0;
+  }
+
+  &__editor-label {
+    font-family: $font-display;
+    font-size: $font-size-xs;
+    color: $color-text-muted;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  &__editor-actions {
+    @include flex-start;
+    gap: $space-2;
+  }
+
+  &__monaco-wrapper {
+    flex: 1;
+    min-height: 200px;
+
+    @include desktop {
+      min-height: 0;
+    }
+  }
+
+  &__run-bar {
+    @include flex-between;
+    padding: $space-3 $space-5;
+    background: $color-bg-secondary;
+    border-top: 1px solid $color-border;
+    flex-shrink: 0;
+    gap: $space-3;
+    flex-wrap: wrap;
+  }
+
+  &__run-meta {
+    font-size: $font-size-xs;
+    color: $color-text-muted;
+    font-family: $font-code;
+  }
+
+  &__run-actions {
+    @include flex-start;
+    gap: $space-3;
+  }
+
+  // ─── Results Panel ─────────────────────────────────────
+  &__results {
+    flex-shrink: 0;
+    border-top: 1px solid $color-border;
+    background: $color-bg-secondary;
+    display: flex;
+    flex-direction: column;
+    max-height: 320px;
+
+    @include desktop {
+      max-height: 280px;
+    }
+  }
+
+  &__results-header {
+    @include flex-between;
+    padding: $space-3 $space-5;
+    border-bottom: 1px solid $color-border;
+    flex-shrink: 0;
+  }
+
+  &__results-title {
+    @include flex-start;
+    gap: $space-2;
+    font-family: $font-display;
+    font-size: $font-size-xs;
+    color: $color-text-secondary;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+
+    &-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: $color-text-muted;
+
+      &--success {
+        background: $color-easy;
+        box-shadow: 0 0 6px $color-easy;
+      }
+
+      &--error {
+        background: $color-accent-red;
+        box-shadow: 0 0 6px $color-accent-red;
+      }
+    }
+  }
+
+  &__results-meta {
+    font-size: $font-size-xs;
+    color: $color-text-muted;
+    font-family: $font-code;
+  }
+
+  &__results-body {
+    flex: 1;
+    overflow: auto;
+    @include custom-scrollbar($color-border);
+  }
+
+  &__results-empty {
+    @include flex-center;
+    height: 80px;
+    color: $color-text-muted;
+    font-size: $font-size-sm;
+    font-family: $font-code;
+    gap: $space-2;
+  }
+
+  &__results-error {
+    padding: $space-4 $space-5;
+    color: $color-accent-red;
+    font-family: $font-code;
+    font-size: $font-size-sm;
+    background: $color-accent-red-dim;
+    border-left: 3px solid $color-accent-red;
+    margin: $space-3;
+    border-radius: $radius-sm;
+  }
+}
+
+// ─── Results Table ────────────────────────────────────────
+.results-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: $font-size-sm;
+  font-family: $font-code;
+
+  th {
+    text-align: left;
+    padding: $space-2 $space-4;
+    background: $color-bg-tertiary;
+    color: $color-text-secondary;
+    font-size: $font-size-xs;
+    font-weight: 600;
+    white-space: nowrap;
+    border-bottom: 1px solid $color-border;
+    position: sticky;
+    top: 0;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  td {
+    padding: $space-2 $space-4;
+    color: $color-text-primary;
+    border-bottom: 1px solid rgba($color-border, 0.5);
+    max-width: 300px;
+    @include truncate;
+
+    &:first-child { color: $color-accent-cyan; }
+  }
+
+  tr:hover td {
+    background: $color-bg-elevated;
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+}
+
+// ─── Question Panel ───────────────────────────────────────
+.question-panel {
+  &__question {
+    font-size: $font-size-sm;
+    color: $color-text-primary;
+    line-height: 1.8;
+    margin-bottom: $space-5;
+    padding: $space-4;
+    background: $color-bg-tertiary;
+    border-radius: $radius-md;
+    border-left: 3px solid $color-accent-cyan;
+  }
+
+  &__expected {
+    font-size: $font-size-sm;
+    color: $color-text-secondary;
+    margin-bottom: $space-5;
+  }
+
+  &__tags {
+    @include flex-start;
+    flex-wrap: wrap;
+    gap: $space-2;
+    margin-top: $space-4;
+  }
+
+  &__section-title {
+    font-family: $font-display;
+    font-size: $font-size-xs;
+    color: $color-text-muted;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: $space-3;
+    margin-top: $space-5;
+
+    &:first-child { margin-top: 0; }
+  }
+}
+
+// ─── Schema Viewer ────────────────────────────────────────
+.schema-viewer {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+
+  &__table {
+    background: $color-bg-tertiary;
+    border: 1px solid $color-border;
+    border-radius: $radius-md;
+    overflow: hidden;
+  }
+
+  &__table-header {
+    @include flex-between;
+    padding: $space-3 $space-4;
+    background: $color-bg-elevated;
+    border-bottom: 1px solid $color-border;
+    cursor: pointer;
+    user-select: none;
+
+    &:hover {
+      background: lighten($color-bg-elevated, 2%);
+    }
+  }
+
+  &__table-name {
+    font-family: $font-code;
+    font-size: $font-size-sm;
+    color: $color-accent-cyan;
+    font-weight: 600;
+  }
+
+  &__table-desc {
+    font-size: $font-size-xs;
+    color: $color-text-muted;
+    margin-top: $space-1;
+  }
+
+  &__table-chevron {
+    color: $color-text-muted;
+    transition: transform $transition-fast;
+    font-size: $font-size-base;
+
+    &--open {
+      transform: rotate(180deg);
+    }
+  }
+
+  &__columns {
+    padding: $space-3;
+  }
+
+  &__column {
+    @include flex-between;
+    padding: $space-2 $space-3;
+    border-radius: $radius-sm;
+    gap: $space-3;
+
+    &:hover {
+      background: $color-bg-elevated;
+    }
+  }
+
+  &__column-name {
+    font-family: $font-code;
+    font-size: $font-size-xs;
+    color: $color-text-primary;
+    flex-shrink: 0;
+  }
+
+  &__column-type {
+    font-family: $font-code;
+    font-size: $font-size-xs;
+    color: $color-accent-purple;
+  }
+
+  &__column-constraint {
+    font-size: $font-size-xs;
+    color: $color-text-muted;
+    font-family: $font-code;
+    text-align: right;
+    @include truncate;
+  }
+}
+
+// ─── Sample Data Preview ──────────────────────────────────
+.sample-data {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+
+  &__table-header {
+    @include flex-between;
+    margin-bottom: $space-3;
+  }
+
+  &__table-name {
+    font-family: $font-code;
+    font-size: $font-size-sm;
+    color: $color-accent-cyan;
+  }
+
+  &__count {
+    font-size: $font-size-xs;
+    color: $color-text-muted;
+  }
+
+  &__scroll {
+    overflow-x: auto;
+    border: 1px solid $color-border;
+    border-radius: $radius-md;
+    @include custom-scrollbar($color-border);
+  }
+}
+
+// ─── Hint Panel ───────────────────────────────────────────
+.hint-panel {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+
+  &__level-selector {
+    @include flex-start;
+    gap: $space-2;
+    flex-wrap: wrap;
+  }
+
+  &__level-btn {
+    @include btn-base;
+    padding: $space-2 $space-4;
+    font-size: $font-size-xs;
+    background: $color-bg-tertiary;
+    color: $color-text-secondary;
+    border: 1px solid $color-border;
+
+    &:hover {
+      border-color: $color-accent-purple;
+      color: $color-accent-purple;
+    }
+
+    &--active {
+      background: rgba($color-accent-purple, 0.12);
+      color: $color-accent-purple;
+      border-color: rgba($color-accent-purple, 0.4);
+    }
+  }
+
+  &__hint-box {
+    background: $color-bg-tertiary;
+    border: 1px solid rgba($color-accent-purple, 0.3);
+    border-radius: $radius-md;
+    padding: $space-4;
+    color: $color-text-primary;
+    font-size: $font-size-sm;
+    line-height: 1.8;
+    position: relative;
+    animation: fadeIn 0.3s ease;
+
+    &::before {
+      content: '💡';
+      display: block;
+      font-size: $font-size-lg;
+      margin-bottom: $space-2;
+    }
+  }
+
+  &__loading {
+    @include flex-center;
+    gap: $space-3;
+    padding: $space-8;
+    color: $color-text-muted;
+    font-size: $font-size-sm;
+  }
+
+  &__empty {
+    @include flex-center;
+    flex-direction: column;
+    gap: $space-3;
+    padding: $space-8;
+    color: $color-text-muted;
+    text-align: center;
+    font-size: $font-size-sm;
+
+    &-icon {
+      font-size: 2rem;
+      opacity: 0.4;
+    }
+  }
+
+  &__count {
+    font-size: $font-size-xs;
+    color: $color-text-muted;
+    font-family: $font-code;
+  }
+}

@@ -1,0 +1,323 @@
+@use '../utils/variables' as *;
+@use '../utils/mixins' as *;
+
+.home-page {
+  &__hero {
+    position: relative;
+    padding: $space-12 0;
+    overflow: hidden;
+
+    @include desktop {
+      padding: $space-16 0;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      gap: $space-10;
+      position: relative;
+      z-index: 1;
+
+      @include desktop {
+        flex-direction: row;
+        align-items: center;
+        gap: $space-12;
+      }
+    }
+  }
+
+  &__hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 0% 50%, rgba($color-accent-cyan, 0.06) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 80% at 100% 20%, rgba($color-accent-purple, 0.06) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  &__hero-content {
+    flex: 1;
+  }
+
+  &__hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: $space-2;
+    background: $color-bg-elevated;
+    border: 1px solid $color-border;
+    border-radius: $radius-full;
+    padding: $space-2 $space-4;
+    font-size: $font-size-xs;
+    color: $color-text-secondary;
+    margin-bottom: $space-6;
+  }
+
+  &__hero-title {
+    font-size: $font-size-3xl;
+    line-height: 1.1;
+    margin-bottom: $space-5;
+
+    @include desktop {
+      font-size: $font-size-4xl;
+    }
+
+    span {
+      background: linear-gradient(135deg, $color-accent-cyan 0%, $color-accent-purple 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+  }
+
+  &__hero-subtitle {
+    font-size: $font-size-base;
+    color: $color-text-secondary;
+    max-width: 520px;
+    margin-bottom: $space-8;
+    line-height: 1.7;
+
+    @include desktop {
+      font-size: $font-size-md;
+    }
+  }
+
+  &__hero-actions {
+    @include flex-start;
+    gap: $space-4;
+    flex-wrap: wrap;
+  }
+
+  &__hero-preview {
+    flex: 1;
+    max-width: 560px;
+    width: 100%;
+  }
+
+  // Code Preview Window
+  &__code-preview {
+    background: $color-bg-secondary;
+    border: 1px solid $color-border;
+    border-radius: $radius-xl;
+    overflow: hidden;
+    box-shadow: $shadow-lg, 0 0 40px rgba($color-accent-cyan, 0.08);
+  }
+
+  &__code-header {
+    @include flex-start;
+    gap: $space-3;
+    padding: $space-3 $space-5;
+    background: $color-bg-tertiary;
+    border-bottom: 1px solid $color-border;
+  }
+
+  &__code-dots {
+    @include flex-start;
+    gap: 6px;
+
+    span {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: $color-border-light;
+
+      &:nth-child(1) { background: #ff5f56; }
+      &:nth-child(2) { background: #ffbd2e; }
+      &:nth-child(3) { background: #27c93f; }
+    }
+  }
+
+  &__code-filename {
+    font-family: $font-code;
+    font-size: $font-size-xs;
+    color: $color-text-muted;
+  }
+
+  &__code-body {
+    padding: $space-5;
+    font-family: $font-code;
+    font-size: $font-size-sm;
+    color: $color-text-secondary;
+    line-height: 1.8;
+    overflow-x: auto;
+
+    code {
+      color: $color-accent-cyan;
+    }
+  }
+
+  &__code-result {
+    border-top: 1px solid $color-border;
+    background: $color-bg-primary;
+  }
+
+  &__code-result-header {
+    padding: $space-2 $space-5;
+    font-family: $font-code;
+    font-size: $font-size-xs;
+    color: $color-accent-green;
+    border-bottom: 1px solid $color-border;
+  }
+
+  &__code-result-row {
+    @include flex-start;
+    gap: 0;
+    padding: $space-2 $space-5;
+    font-family: $font-code;
+    font-size: $font-size-xs;
+    color: $color-text-secondary;
+    border-bottom: 1px solid rgba($color-border, 0.5);
+
+    &:last-child { border-bottom: none; }
+
+    span {
+      flex: 1;
+      &:first-child { color: $color-accent-cyan; }
+    }
+  }
+
+  // Sections
+  &__section {
+    padding: $space-12 0;
+
+    @include desktop {
+      padding: $space-16 0;
+    }
+
+    &--alt {
+      background: $color-bg-secondary;
+    }
+  }
+
+  &__section-title {
+    font-size: $font-size-xl;
+    text-align: center;
+    margin-bottom: $space-10;
+
+    @include desktop {
+      font-size: $font-size-2xl;
+    }
+  }
+
+  // Difficulty grid
+  &__difficulty-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: $space-4;
+
+    @include tablet {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  &__difficulty-card {
+    @include card;
+    text-align: center;
+    border-color: rgba(var(--accent), 0.3);
+    transition: all $transition-base;
+
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: $shadow-lg;
+      border-color: var(--accent);
+    }
+  }
+
+  &__difficulty-badge {
+    display: inline-block;
+    font-family: $font-display;
+    font-size: $font-size-lg;
+    color: var(--accent);
+    margin-bottom: $space-2;
+  }
+
+  &__difficulty-count {
+    font-size: $font-size-sm;
+    color: $color-text-secondary;
+    margin-bottom: $space-2;
+  }
+
+  &__difficulty-desc {
+    font-size: $font-size-xs;
+    color: $color-text-muted;
+    font-family: $font-code;
+  }
+
+  // Features grid
+  &__features-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: $space-5;
+
+    @include tablet {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include desktop {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  &__feature-card {
+    @include card;
+    transition: all $transition-base;
+
+    &:hover {
+      transform: translateY(-2px);
+      border-color: $color-border-light;
+    }
+  }
+
+  &__feature-icon {
+    font-size: 1.75rem;
+    margin-bottom: $space-3;
+  }
+
+  &__feature-title {
+    font-family: $font-display;
+    font-size: $font-size-base;
+    margin-bottom: $space-2;
+  }
+
+  &__feature-desc {
+    font-size: $font-size-sm;
+    color: $color-text-secondary;
+    line-height: 1.6;
+  }
+
+  // CTA
+  &__cta {
+    padding: $space-16 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 100% at 50% 100%, rgba($color-accent-cyan, 0.06) 0%, transparent 70%);
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: $space-4;
+    }
+
+    h2 {
+      font-size: $font-size-2xl;
+
+      @include desktop {
+        font-size: $font-size-3xl;
+      }
+    }
+
+    p {
+      color: $color-text-secondary;
+      font-size: $font-size-md;
+    }
+  }
+}

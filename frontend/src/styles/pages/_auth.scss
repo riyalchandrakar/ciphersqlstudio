@@ -1,0 +1,124 @@
+@use '../utils/variables' as *;
+@use '../utils/mixins' as *;
+
+.auth-page {
+  min-height: 100vh;
+  @include flex-center;
+  padding: $space-6 $space-4;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 20% 20%, rgba($color-accent-cyan, 0.05) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 60% at 80% 80%, rgba($color-accent-purple, 0.05) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  &__card {
+    width: 100%;
+    max-width: 440px;
+    background: $color-bg-secondary;
+    border: 1px solid $color-border;
+    border-radius: $radius-xl;
+    padding: $space-8;
+    position: relative;
+    animation: fadeIn 0.4s ease;
+    box-shadow: $shadow-lg;
+  }
+
+  &__logo {
+    @include flex-center;
+    gap: $space-3;
+    text-decoration: none;
+    margin-bottom: $space-8;
+
+    &-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, $color-accent-cyan, $color-accent-purple);
+      border-radius: $radius-md;
+      @include flex-center;
+      font-family: $font-display;
+      font-weight: 700;
+      color: $color-bg-primary;
+      font-size: $font-size-base;
+    }
+
+    &-text {
+      font-family: $font-display;
+      font-size: $font-size-lg;
+      font-weight: 700;
+      color: $color-text-primary;
+      span { color: $color-accent-cyan; }
+    }
+  }
+
+  &__title {
+    font-family: $font-display;
+    font-size: $font-size-xl;
+    color: $color-text-primary;
+    margin-bottom: $space-2;
+    text-align: center;
+  }
+
+  &__subtitle {
+    font-size: $font-size-sm;
+    color: $color-text-secondary;
+    text-align: center;
+    margin-bottom: $space-8;
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: $space-5;
+  }
+
+  &__submit {
+    width: 100%;
+    margin-top: $space-2;
+  }
+
+  &__divider {
+    @include flex-center;
+    gap: $space-3;
+    color: $color-text-muted;
+    font-size: $font-size-xs;
+
+    &::before,
+    &::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: $color-border;
+    }
+  }
+
+  &__switch {
+    text-align: center;
+    font-size: $font-size-sm;
+    color: $color-text-secondary;
+
+    a {
+      color: $color-accent-cyan;
+      font-weight: 600;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  &__error {
+    background: $color-accent-red-dim;
+    border: 1px solid rgba($color-accent-red, 0.3);
+    border-radius: $radius-md;
+    padding: $space-3 $space-4;
+    color: $color-accent-red;
+    font-size: $font-size-sm;
+  }
+}
