@@ -3,10 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const rateLimit = require("express-rate-limit");
 const helmet = require("helmet");
-const mongoSanitize = require("express-mongo-sanitize");
-const xss = require("xss-clean");
 const compression = require("compression");
-const morgan = require("morgan");
 
 const connectMongoDB = require("./config/mongodb");
 const { connectPostgres } = require("./config/postgres");
@@ -22,26 +19,20 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const isProduction = process.env.NODE_ENV === "production";
 
-// ─── Security Middlewares ───────────────────────────────
+/* ─────────────────────────────────────────
+   TRUST PROXY (IMPORTANT FOR RENDER)
+───────────────────────────────────────── */
+app.set("trust proxy", 1);
 
-// Security headers
+/* ─────────────────────────────────────────
+   SECURITY MIDDLEWARE
+───────────────────────────────────────── */
 app.use(helmet());
-
-// Enable compression
 app.use(compression());
 
-// Prevent NoSQL Injection
-app.use(mongoSanitize());
-
-// Prevent XSS attacks
-app.use(xss());
-
-// Request logging (only in development)
-if (!isProduction) {
-  app.use(morgan("dev"));
-}
-
-// ─── CORS ────────────────────────────────────────────────
+/* ─────────────────────────────────────────
+   CORS
+───────────────────────────────────────── */
 app.use(
   cors({
     origin: process.env.FRONTEND_URL,
@@ -49,47 +40,47 @@ app.use(
   }),
 );
 
-// ─── Body Parser ─────────────────────────────────────────
+/* ─────────────────────────────────────────
+   BODY PARSER
+───────────────────────────────────────── */
 app.use(express.json({ limit: "10kb" }));
 app.use(express.urlencoded({ extended: true }));
 
-// ─── Rate Limiting ───────────────────────────────────────
-
-// Global limiter
-const globalLimiter = rateLimit({
+/* ─────────────────────────────────────────
+   RATE LIMITING
+───────────────────────────────────────── */
+const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 200,
   standardHeaders: true,
   legacyHeaders: false,
 });
-app.use(globalLimiter);
+app.use(limiter);
 
-// Strict limiter for auth routes
-const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 20,
-  message: "Too many login attempts. Try again later.",
-});
-app.use("/api/auth", authLimiter);
-
-// ─── Routes ──────────────────────────────────────────────
+/* ─────────────────────────────────────────
+   ROUTES
+───────────────────────────────────────── */
 app.use("/api/auth", authRoutes);
 app.use("/api/assignments", assignmentRoutes);
 app.use("/api/query", queryRoutes);
 app.use("/api/hints", hintRoutes);
 app.use("/api/attempts", attemptRoutes);
 
-// ─── Health Check (for Render / Railway / AWS) ──────────
+/* ─────────────────────────────────────────
+   HEALTH CHECK
+───────────────────────────────────────── */
 app.get("/api/health", (req, res) => {
   res.status(200).json({
     success: true,
-    message: "CipherSQLStudio API is running 🚀",
+    message: "CipherSQLStudio API running 🚀",
     uptime: process.uptime(),
     timestamp: new Date().toISOString(),
   });
 });
 
-// ─── 404 Handler ─────────────────────────────────────────
+/* ─────────────────────────────────────────
+   404 HANDLER
+───────────────────────────────────────── */
 app.use((req, res) => {
   res.status(404).json({
     success: false,
@@ -97,38 +88,30 @@ app.use((req, res) => {
   });
 });
 
-// ─── Global Error Handler ────────────────────────────────
+/* ─────────────────────────────────────────
+   GLOBAL ERROR HANDLER
+───────────────────────────────────────── */
 app.use((err, req, res, next) => {
-  console.error("Unhandled error:", err);
-
+  console.error("Unhandled Error:", err);
   res.status(err.status || 500).json({
     success: false,
     message: isProduction ? "Something went wrong." : err.message,
   });
 });
 
-// ─── Graceful Shutdown ───────────────────────────────────
-process.on("unhandledRejection", (err) => {
-  console.error("Unhandled Rejection:", err);
-  process.exit(1);
-});
-
-process.on("uncaughtException", (err) => {
-  console.error("Uncaught Exception:", err);
-  process.exit(1);
-});
-
-// ─── Start Server ────────────────────────────────────────
+/* ─────────────────────────────────────────
+   START SERVER (Render Compatible)
+───────────────────────────────────────── */
 const start = async () => {
   try {
     await connectMongoDB();
     await connectPostgres();
 
-    app.listen(PORT, () => {
+    app.listen(PORT, "0.0.0.0", () => {
       console.log(`🚀 Server running on port ${PORT}`);
     });
-  } catch (err) {
-    console.error("Server failed to start:", err);
+  } catch (error) {
+    console.error("Server failed to start:", error);
     process.exit(1);
   }
 };
