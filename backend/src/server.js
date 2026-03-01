@@ -69,6 +69,10 @@ app.use("/api/attempts", attemptRoutes);
 /* ─────────────────────────────────────────
    HEALTH CHECK
 ───────────────────────────────────────── */
+app.get("/", (req, res) => {
+  res.send("CipherSQLStudio Backend Running 🚀");
+});
+
 app.get("/api/health", (req, res) => {
   res.status(200).json({
     success: true,
