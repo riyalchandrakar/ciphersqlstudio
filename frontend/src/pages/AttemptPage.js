@@ -56,13 +56,21 @@ const AttemptPage = () => {
   }, [id, user, navigate, showToast]);
 
   const runQuery = useCallback(async () => {
+    const cleanedQuery = query.replace(/--.*$/gm, "").trim();
+    if (!cleanedQuery) return;
+
+    // 👇 Add this simple validation
+    if (!/select\s+.+/i.test(cleanedQuery) && !/^with\s+/i.test(cleanedQuery)) {
+      setError("Please complete your SELECT query before running.");
+      return;
+    }
     if (!query.trim()) return;
     setExecuting(true);
     setError(null);
     setResult(null);
 
     try {
-      const { data } = await queryAPI.execute(query, id);
+      const { data } = await queryAPI.execute(cleanedQuery, id);
       setResult(data);
       showToast(
         `✓ ${data.rowCount} rows returned in ${data.executionTime}ms`,
