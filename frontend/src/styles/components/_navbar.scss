@@ -1,5 +1,5 @@
-@use '../utils/variables' as *;
-@use '../utils/mixins' as *;
+@use "../utils/variables" as *;
+@use "../utils/mixins" as *;
 
 .navbar {
   position: sticky;
@@ -39,7 +39,11 @@
     &-icon {
       width: 32px;
       height: 32px;
-      background: linear-gradient(135deg, $color-accent-cyan, $color-accent-purple);
+      background: linear-gradient(
+        135deg,
+        $color-accent-cyan,
+        $color-accent-purple
+      );
       border-radius: $radius-md;
       @include flex-center;
       font-size: $font-size-sm;
@@ -72,6 +76,18 @@
     }
   }
 
+  &__logout-btn {
+    margin-left: $space-2;
+
+    @include desktop {
+      display: inline-flex;
+    }
+
+    @media (max-width: #{$bp-desktop - 1px}) {
+      display: none;
+    }
+  }
+
   &__link {
     color: $color-text-secondary;
     font-size: $font-size-sm;
@@ -92,29 +108,33 @@
     }
   }
 
- &__actions {
-  @include flex-start;
-  gap: $space-3;
-}
-
-/* Hide auth buttons on mobile */
-.navbar__actions .btn,
-.navbar__actions .navbar__user {
-  display: none;
-
-  @include desktop {
-    display: flex;
+  &__actions {
+    @include flex-start;
+    gap: $space-3;
   }
-}
+
+  /* Hide auth buttons on mobile */
+  .navbar__actions .btn,
+  .navbar__actions .navbar__user {
+    display: none;
+
+    @include desktop {
+      display: flex;
+    }
+  }
   &__user {
     @include flex-start;
     gap: $space-2;
-    
+
     &-avatar {
       width: 32px;
       height: 32px;
       border-radius: 50%;
-      background: linear-gradient(135deg, $color-accent-purple, $color-accent-cyan);
+      background: linear-gradient(
+        135deg,
+        $color-accent-purple,
+        $color-accent-cyan
+      );
       @include flex-center;
       font-size: $font-size-xs;
       font-weight: 700;
@@ -172,5 +192,20 @@
     @include desktop {
       display: none;
     }
+  }
+}
+
+.navbar__mobile-menu {
+  align-items: stretch;
+
+  .navbar__link,
+  .btn {
+    width: 100%;
+    justify-content: flex-start;
+    text-align: left;
+  }
+
+  .btn {
+    display: flex;
   }
 }

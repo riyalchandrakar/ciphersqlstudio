@@ -51,13 +51,15 @@ const Navbar = () => {
           {user ? (
             <div className="navbar__user">
               <span className="navbar__user-name">{user.username}</span>
-              <div
-                className="navbar__user-avatar"
-                title={`${user.username} — Click to logout`}
+
+              <div className="navbar__user-avatar">{initials}</div>
+
+              <button
+                className="btn btn--danger btn--sm navbar__logout-btn"
                 onClick={handleLogout}
               >
-                {initials}
-              </div>
+                Logout
+              </button>
             </div>
           ) : (
             <>
