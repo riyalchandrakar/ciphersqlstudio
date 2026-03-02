@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useToast } from "../context/ToastContext";
 import "../styles/pages/_auth.scss";
+import AuthBackHeader from "../components/AuthBackHeader";
 
 const RegisterPage = () => {
   const [form, setForm] = useState({ username: "", email: "", password: "" });
@@ -37,6 +38,7 @@ const RegisterPage = () => {
 
   return (
     <div className="auth-page">
+      <AuthBackHeader />
       <div className="auth-page__card">
         <Link to="/" className="auth-page__logo">
           <div className="auth-page__logo-icon">CS</div>

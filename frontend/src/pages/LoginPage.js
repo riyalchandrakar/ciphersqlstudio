@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useToast } from "../context/ToastContext";
+import AuthBackHeader from "../components/AuthBackHeader";
 import "../styles/pages/_auth.scss";
 
 const LoginPage = () => {
@@ -35,6 +36,7 @@ const LoginPage = () => {
 
   return (
     <div className="auth-page">
+      <AuthBackHeader />
       <div className="auth-page__card">
         <Link to="/" className="auth-page__logo">
           <div className="auth-page__logo-icon">CS</div>
