@@ -138,13 +138,16 @@
   }
 
   // ─── Right Panel ───────────────────────────────────────
-  &__right-panel {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    min-height: 0;
+&__right-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+
+  @media (max-width: #{$bp-desktop - 1px}) {
+    overflow: visible;
   }
+}
 
   &__editor-area {
     flex: 1;
@@ -175,14 +178,16 @@
     gap: $space-2;
   }
 
-  &__monaco-wrapper {
-    flex: 1;
-    min-height: 200px;
+&__monaco-wrapper {
+  flex: 1;
+  min-height: 200px;
+  position: relative;
 
-    @include desktop {
-      min-height: 0;
-    }
+  @media (max-width: #{$bp-desktop - 1px}) {
+    height: 50vh;
+    flex: none;
   }
+}
 
   &__run-bar {
     @include flex-between;
